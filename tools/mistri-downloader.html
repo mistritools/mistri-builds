@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YouTube Playlist Downloader — MISTRI Builds</title>
+  <meta name="description" content="Download YouTube videos and playlists in MP4 or MP3. Free Windows app by MISTRI Builds. No Python required."/>
+  <meta name="keywords" content="YouTube downloader, playlist downloader, MP4 downloader, MP3 downloader, free Windows app"/>
+
+  <link rel="icon" type="image/x-icon" href="../downloader_icon.ico"/>
+
+  <!-- Google AdSense — Uncomment after approval -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --coral: #e8957a;
+      --coral-dark: #d4795d;
+      --teal: #5bc8d4;
+      --teal-dark: #3eadb9;
+      --bg: #0c0e13;
+      --bg2: #11141c;
+      --card: #1c2030;
+      --border: rgba(255,255,255,0.07);
+      --text: #dde1ee;
+      --muted: #6b7290;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(12,14,19,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%; height: 64px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.3rem;
+      letter-spacing: -0.02em;
+    }
+    .logo .teal { color: var(--teal); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .download-btn {
+      background: var(--coral); color: white;
+      padding: 0.45rem 1.2rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.875rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .download-btn:hover { background: var(--coral-dark); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; cursor: pointer;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(12,14,19,0.97);
+      flex-direction: column;
+      padding: 1.5rem 5%; gap: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a { font-size: 1rem; color: var(--text); }
+    .mobile-menu .download-btn { width: fit-content; }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      padding: 1.25rem 5%;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .breadcrumb a { color: var(--teal); transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--teal-dark); }
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    /* TOOL HERO */
+    .tool-hero {
+      padding: 4rem 5% 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-hero::before {
+      content: '';
+      position: absolute; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,149,122,0.10) 0%, transparent 65%);
+      top: -100px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .tool-icon { font-size: 4rem; margin-bottom: 1rem; animation: fadeUp 0.5s ease both; }
+
+    .tool-name {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .version-badge {
+      display: inline-block;
+      background: rgba(91,200,212,0.08);
+      border: 1px solid rgba(91,200,212,0.22);
+      color: var(--teal); padding: 0.3rem 1rem;
+      border-radius: 100px; font-family: var(--font-mono);
+      font-size: 0.85rem; margin-bottom: 1.25rem;
+      animation: fadeUp 0.5s 0.15s ease both;
+    }
+
+    .tool-tagline {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 560px; margin: 0 auto 2rem;
+      font-weight: 300;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+
+    .tool-buttons {
+      display: flex; justify-content: center;
+      gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp 0.5s 0.25s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--coral); color: white;
+      padding: 0.85rem 1.8rem; border-radius: 10px;
+      font-weight: 700; font-size: 1rem;
+      font-family: var(--font-display);
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(232,149,122,0.25);
+    }
+    .btn-primary:hover {
+      background: var(--coral-dark); transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(232,149,122,0.35);
+    }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--teal);
+      border: 1.5px solid rgba(91,200,212,0.4);
+      padding: 0.85rem 1.8rem; border-radius: 10px;
+      font-weight: 600; font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(91,200,212,0.08);
+      border-color: var(--teal); transform: translateY(-2px);
+    }
+
+    /* INFO BAR */
+    .info-bar {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 5%;
+      display: flex; justify-content: center;
+      flex-wrap: wrap; gap: 2.5rem;
+    }
+    .info-item { text-align: center; }
+    .info-label {
+      color: var(--muted); font-size: 0.78rem;
+      font-family: var(--font-mono); margin-bottom: 0.25rem;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .info-value { font-weight: 600; font-size: 0.95rem; }
+
+    /* ADSENSE */
+    .adsense-slot {
+      padding: 1.25rem 5%; max-width: 800px;
+      margin: 0 auto; text-align: center;
+    }
+    .adsense-placeholder {
+      background: var(--card); border: 1px dashed var(--border);
+      border-radius: 8px; padding: 1.25rem;
+      color: var(--muted); font-family: var(--font-mono); font-size: 0.78rem;
+      display: none; /* Hidden until AdSense is approved */
+    }
+
+    /* DESCRIPTION */
+    .description {
+      padding: 4rem 5%; max-width: 860px; margin: 0 auto;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 1.25rem; text-align: center;
+    }
+    .description p {
+      color: var(--muted); margin-bottom: 1.25rem;
+      line-height: 1.8; font-weight: 300;
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 3rem 5%; max-width: 1100px; margin: 0 auto;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem; margin-top: 2rem;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+      text-align: left; transition: transform 0.2s, border-color 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); border-color: rgba(232,149,122,0.3); }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+    .feature-card h3 {
+      font-family: var(--font-display); font-size: 1rem;
+      font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .feature-card p { color: var(--muted); font-size: 0.875rem; font-weight: 300; }
+
+    /* MOCK APP */
+    .mock-ui {
+      padding: 4rem 5%; max-width: 1100px; margin: 0 auto;
+      text-align: center;
+    }
+    .mock-sub { color: var(--muted); margin-bottom: 2.5rem; }
+
+    .app-window {
+      background: #f5f0e8; color: #2a2a2a;
+      border-radius: 10px; overflow: hidden;
+      max-width: 680px; margin: 0 auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      text-align: left; font-size: 0.85rem;
+    }
+
+    .window-title-bar {
+      background: #d6cfc4; padding: 0.5rem 1rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .window-controls { display: flex; gap: 6px; }
+    .control-dot { width: 12px; height: 12px; border-radius: 50%; background: #aaa; }
+
+    .window-content { padding: 1rem; }
+
+    .section-group {
+      border: 1px solid #c0b8ae; border-radius: 4px;
+      padding: 0.75rem 1rem; margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .group-label {
+      position: absolute; top: -0.6rem; left: 0.75rem;
+      background: #f5f0e8; padding: 0 0.25rem;
+      font-size: 0.75rem; color: #555;
+    }
+
+    .input-row {
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
+    }
+    .input-row:last-child { margin-bottom: 0; }
+
+    .mock-input {
+      flex: 1; background: white; border: 1px solid #c0b8ae;
+      border-radius: 3px; padding: 0.3rem 0.5rem;
+      font-size: 0.8rem; color: #2a2a2a;
+    }
+    .mock-select {
+      background: white; border: 1px solid #c0b8ae;
+      border-radius: 3px; padding: 0.25rem 0.4rem; font-size: 0.8rem;
+    }
+
+    .mock-btn-teal {
+      background: var(--teal); color: white; border: none;
+      padding: 0.3rem 0.75rem; border-radius: 3px; font-size: 0.8rem; cursor: pointer;
+    }
+    .mock-btn-coral {
+      background: var(--coral); color: white; border: none;
+      padding: 0.3rem 0.75rem; border-radius: 3px; font-size: 0.8rem; cursor: pointer;
+    }
+    .mock-btn-plain {
+      background: #ddd; color: #333; border: none;
+      padding: 0.3rem 0.75rem; border-radius: 3px; font-size: 0.8rem; cursor: pointer;
+    }
+
+    .mock-radio-group { display: flex; gap: 1rem; font-size: 0.8rem; align-items: center; }
+
+    .mock-progress-bar {
+      height: 8px; background: #c0b8ae;
+      border-radius: 4px; overflow: hidden; margin-top: 0.3rem;
+    }
+    .mock-progress-fill { height: 100%; background: var(--teal); border-radius: 4px; }
+
+    .mock-log {
+      width: 100%; background: white; border: 1px solid #c0b8ae;
+      border-radius: 3px; padding: 0.5rem; font-size: 0.75rem;
+      color: #888; height: 70px; resize: none;
+      font-family: var(--font-mono);
+    }
+
+    .window-footer {
+      display: flex; gap: 0.5rem; justify-content: center;
+      padding: 0.75rem 1rem; background: #ebe5da;
+      border-top: 1px solid #c0b8ae; flex-wrap: wrap;
+    }
+    .window-credit {
+      text-align: right; padding: 0.3rem 0.75rem;
+      font-size: 0.7rem; color: #888;
+      background: #ebe5da; font-family: var(--font-mono);
+    }
+
+    /* PROS CONS */
+    .pros-cons {
+      padding: 4rem 5%; max-width: 900px; margin: 0 auto;
+    }
+    .pros-cons-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 2rem;
+    }
+    .pros-box, .cons-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+    }
+    .pros-box { border-top: 2px solid #4caf8a; }
+    .cons-box { border-top: 2px solid var(--coral); }
+
+    .pros-box h3, .cons-box h3 {
+      font-family: var(--font-display); font-size: 1.1rem;
+      font-weight: 700; margin-bottom: 1.25rem;
+    }
+    .pros-box h3 { color: #4caf8a; }
+    .cons-box h3 { color: var(--coral); }
+
+    .pros-box ul, .cons-box ul { list-style: none; }
+    .pros-box li, .cons-box li {
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      position: relative; font-size: 0.9rem;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+    }
+    .pros-box li:last-child, .cons-box li:last-child { border-bottom: none; }
+    .pros-box li::before {
+      content: "✓"; color: #4caf8a;
+      position: absolute; left: 0; font-weight: bold;
+    }
+    .cons-box li::before {
+      content: "✗"; color: var(--coral);
+      position: absolute; left: 0; font-weight: bold;
+    }
+
+    /* DOWNLOAD CTA */
+    .download-cta {
+      padding: 5rem 5%; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .download-cta::before {
+      content: '';
+      position: absolute; width: 500px; height: 350px;
+      background: radial-gradient(circle, rgba(232,149,122,0.07) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+    .download-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+    }
+    .download-cta p { color: var(--muted); margin-bottom: 2rem; }
+    .sys-req {
+      margin-top: 1.25rem; font-size: 0.78rem;
+      color: var(--muted); font-family: var(--font-mono);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--card); border-top: 1px solid var(--border);
+      padding: 2.5rem 5%; text-align: center; margin-top: 2rem;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted);
+    }
+    .footer-links {
+      display: flex; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap; margin: 0.75rem 0;
+    }
+    footer a { color: var(--text); transition: color 0.2s; }
+    footer a:hover { color: var(--coral); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.appear { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links, nav > .download-btn { display: none; }
+      .hamburger { display: flex; }
+      .tool-hero { padding: 3rem 5% 2rem; }
+      .pros-cons-grid { grid-template-columns: 1fr; }
+      .window-footer { gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="logo"><img src="../downloader_icon.ico" height="32" style="border-radius:6px; margin-right:0.5rem; vertical-align:middle;"/>MISTRI <span class="teal">Builds</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../faq.html">FAQ</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../index.html">Home</a>
+  <a href="../faq.html">FAQ</a>
+  <a href="../privacy-policy.html">Privacy Policy</a>
+  <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="../index.html">Home</a>
+  <span>→</span>
+  <a href="../index.html#builds">Tools</a>
+  <span>→</span>
+  <span style="color: var(--text);">YouTube Playlist Downloader</span>
+</div>
+
+<!-- TOOL HERO -->
+<section class="tool-hero">
+  <div class="tool-icon">🎬</div>
+  <h1 class="tool-name">YouTube Playlist Downloader</h1>
+  <div class="version-badge">v1.0</div>
+  <p class="tool-tagline">Download YouTube videos &amp; playlists in MP4 or MP3. Free. Forever.</p>
+  <div class="tool-buttons">
+    <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="btn-primary">⬇ Download Free</a>
+    <a href="../faq.html" class="btn-secondary">View FAQ →</a>
+  </div>
+</section>
+
+<!-- INFO BAR -->
+<div class="info-bar fade-in">
+  <div class="info-item">
+    <div class="info-label">Version</div>
+    <div class="info-value">v1.0</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label">Size</div>
+    <div class="info-value">~50MB</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label">OS</div>
+    <div class="info-value">Windows 10/11</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label">License</div>
+    <div class="info-value">Free</div>
+  </div>
+</div>
+
+<!-- ADSENSE SLOT 1 -->
+<div class="adsense-slot">
+  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins> -->
+  <div class="adsense-placeholder">[ Ad Slot 1 — 728×90 ]</div>
+</div>
+
+<!-- DESCRIPTION -->
+<section class="description fade-in">
+  <h2 class="section-title">What is YouTube Playlist Downloader?</h2>
+  <p>YouTube Playlist Downloader is a free Windows desktop application built with Python that lets you download YouTube videos and audio in both MP4 and MP3 formats. It's designed to be simple, fast, and user-friendly while packing in everything you need.</p>
+  <p>The tool supports downloading entire playlists — save your favourite music collections or video series with just a few clicks. Quality selection options include best, 1080p, 720p and more, so you can choose what fits your needs and storage.</p>
+  <p>No Python installation required — ships as a standalone `.exe` file. Just download and run. Real-time speed and ETA tracking, download history, and dark/light mode are all built in.</p>
+</section>
+
+<!-- FEATURES -->
+<section class="features fade-in">
+  <h2 class="section-title">Powerful Features</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <h3>MP4 &amp; MP3 Support</h3>
+      <p>Download videos in MP4 or extract audio as MP3.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Playlist Downloader</h3>
+      <p>Download entire YouTube playlists in one click.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚙️</div>
+      <h3>Quality Selector</h3>
+      <p>Choose from best, 1080p, 720p, 480p and more.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Real-time Speed &amp; ETA</h3>
+      <p>Track download speed and time estimate live.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🕓</div>
+      <h3>Download History</h3>
+      <p>Keep a full log of all your past downloads.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌗</div>
+      <h3>Dark &amp; Light Mode</h3>
+      <p>Switch themes to match your preference.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MOCK APP UI -->
+<section class="mock-ui fade-in">
+  <h2 class="section-title">Clean, simple interface. No bloat.</h2>
+  <p class="mock-sub">Everything is exactly where you expect it.</p>
+
+  <div class="app-window">
+    <div class="window-title-bar">
+      <span>YouTube Playlist Downloader</span>
+      <div class="window-controls">
+        <div class="control-dot"></div>
+        <div class="control-dot"></div>
+        <div class="control-dot"></div>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <!-- URL -->
+      <div class="section-group">
+        <span class="group-label">YouTube URL</span>
+        <div class="input-row">
+          <input class="mock-input" type="text" placeholder="https://youtube.com/watch?v=...">
+          <button class="mock-btn-teal">Get Info</button>
+        </div>
+        <div style="font-size:0.75rem;color:#888;margin-top:0.2rem;">Enter URL and click 'Get Info'</div>
+      </div>
+
+      <!-- Options -->
+      <div class="section-group">
+        <span class="group-label">Download Options</span>
+        <div class="input-row">
+          <span style="min-width:55px;font-size:0.8rem;">Format:</span>
+          <div class="mock-radio-group">
+            <label><input type="radio" name="fmt" checked> MP4 Video</label>
+            <label><input type="radio" name="fmt"> MP3 Audio</label>
+          </div>
+        </div>
+        <div class="input-row">
+          <span style="min-width:55px;font-size:0.8rem;">Quality:</span>
+          <select class="mock-select"><option>best</option><option>1080p</option><option>720p</option><option>480p</option></select>
+        </div>
+        <div class="input-row">
+          <span style="min-width:55px;font-size:0.8rem;">Save to:</span>
+          <input class="mock-input" type="text" value="C:\Users\Downloads">
+          <button class="mock-btn-plain">Browse</button>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="section-group">
+        <span class="group-label">Download Progress</span>
+        <div style="font-size:0.78rem;margin-bottom:0.25rem;">Current Video:</div>
+        <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:65%"></div></div>
+        <div style="font-size:0.75rem;color:#888;margin:0.3rem 0;">Speed: 2.4 MB/s | ETA: 1:15</div>
+        <div style="font-size:0.78rem;margin-bottom:0.25rem;">Playlist Progress:</div>
+        <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:30%"></div></div>
+        <div style="font-size:0.75rem;color:#888;margin-top:0.3rem;">Videos: 12 / 40</div>
+      </div>
+
+      <!-- Log -->
+      <div class="section-group">
+        <span class="group-label">Download Log</span>
+        <textarea class="mock-log" readonly>[INFO] Starting download...
+[INFO] Downloading video 12 of 40...
+[SUCCESS] Video downloaded successfully
+[INFO] Converting to MP3...</textarea>
+      </div>
+    </div>
+
+    <div class="window-footer">
+      <button class="mock-btn-coral">Download</button>
+      <button class="mock-btn-plain">Cancel</button>
+      <button class="mock-btn-teal">History</button>
+      <button class="mock-btn-plain">Open Folder</button>
+    </div>
+    <div class="window-credit">Developed By Mistri</div>
+  </div>
+</section>
+
+<!-- PROS & CONS -->
+<section class="pros-cons fade-in">
+  <h2 class="section-title">Pros &amp; Cons</h2>
+  <div class="pros-cons-grid">
+    <div class="pros-box">
+      <h3>✓ Pros</h3>
+      <ul>
+        <li>Completely free, no hidden costs</li>
+        <li>No Python installation needed</li>
+        <li>Supports full playlist downloads</li>
+        <li>Real-time speed and ETA tracking</li>
+        <li>Lightweight and fast</li>
+        <li>Dark and light mode support</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h3>✗ Cons</h3>
+      <ul>
+        <li>Windows only (no Mac/Linux)</li>
+        <li>Requires internet connection</li>
+        <li>Speed depends on YouTube servers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ADSENSE SLOT 2 -->
+<div class="adsense-slot">
+  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins> -->
+  <div class="adsense-placeholder">[ Ad Slot 2 — 728×90 ]</div>
+</div>
+
+<!-- DOWNLOAD CTA -->
+<section class="download-cta fade-in">
+  <h2>Ready to download?</h2>
+  <p>Free for Windows. No installation fees. No hidden costs.</p>
+  <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="btn-primary">⬇ Download Now — It's Free</a>
+  <p class="sys-req">Windows 10 / 11 &nbsp;•&nbsp; ~50MB disk space &nbsp;•&nbsp; No Python required</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>Developed by MISTRI</div>
+  <div class="footer-links">
+    <a href="../index.html">Home</a>
+    <a href="../faq.html">FAQ</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+  </div>
+  <div>&copy; 2026 MISTRI Builds. All rights reserved.</div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('appear');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
