@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MISTRI Builds — Free Windows Tools</title>
+  <meta name="description" content="MISTRI Builds is a growing suite of free Windows tools designed to solve everyday problems. Simple, fast, and powerful."/>
+  <meta name="keywords" content="MISTRI Builds, free Windows tools, YouTube downloader, download manager, Windows apps"/>
+
+  <link rel="icon" type="image/x-icon" href="./downloader_icon.ico"/>
+
+  <!-- Google AdSense — Uncomment after approval -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --coral: #e8957a;
+      --coral-dark: #d4795d;
+      --teal: #5bc8d4;
+      --teal-dark: #3eadb9;
+      --bg: #0c0e13;
+      --bg2: #11141c;
+      --card: #1c2030;
+      --border: rgba(255,255,255,0.07);
+      --text: #dde1ee;
+      --muted: #6b7290;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(12,14,19,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%; height: 64px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.3rem;
+      letter-spacing: -0.02em;
+    }
+    .logo .teal { color: var(--teal); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .download-btn {
+      background: var(--coral); color: white;
+      padding: 0.45rem 1.2rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.875rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .download-btn:hover { background: var(--coral-dark); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; cursor: pointer;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(12,14,19,0.97);
+      flex-direction: column;
+      padding: 1.5rem 5%; gap: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a { font-size: 1rem; color: var(--text); }
+    .mobile-menu .download-btn { width: fit-content; }
+
+    /* HERO */
+    .hero {
+      position: relative; padding: 8rem 5% 6rem;
+      text-align: center; overflow: hidden;
+    }
+    .hero-glow-1 {
+      position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(232,149,122,0.12) 0%, transparent 65%);
+      top: -150px; left: -150px; pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute; width: 550px; height: 550px;
+      background: radial-gradient(circle, rgba(91,200,212,0.10) 0%, transparent 65%);
+      bottom: -150px; right: -150px; pointer-events: none;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; margin-bottom: 1.25rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--coral), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted); max-width: 650px;
+      margin: 0 auto 2.5rem; font-weight: 300;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .explore-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--coral); color: white;
+      padding: 0.9rem 2rem; border-radius: 10px;
+      font-weight: 700; font-size: 1rem;
+      font-family: var(--font-display);
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(232,149,122,0.25);
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .explore-btn:hover {
+      background: var(--coral-dark); transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(232,149,122,0.35);
+    }
+
+    /* ABOUT */
+    .about { padding: 6rem 5%; text-align: center; background: var(--bg2); }
+
+    .badge {
+      display: inline-block;
+      background: rgba(91,200,212,0.08);
+      border: 1px solid rgba(91,200,212,0.22);
+      color: var(--teal); padding: 0.35rem 1rem;
+      border-radius: 100px; font-size: 0.78rem;
+      font-family: var(--font-mono); margin-bottom: 1.25rem;
+    }
+
+    .about h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .about > p {
+      color: var(--muted); max-width: 650px;
+      margin: 0 auto 3rem; font-size: 1.05rem; font-weight: 300;
+    }
+
+    .stats { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem 2rem; min-width: 180px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(91,200,212,0.3); }
+    .stat-card h3 {
+      font-family: var(--font-display); font-size: 1.6rem;
+      margin-bottom: 0.3rem; color: var(--teal);
+    }
+    .stat-card p { color: var(--muted); font-size: 0.875rem; }
+
+    /* BUILDS */
+    .builds { padding: 6rem 5%; }
+
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+    }
+    .section-header p { color: var(--muted); }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tool-card:hover { transform: translateY(-4px); border-color: rgba(232,149,122,0.25); }
+    .tool-card.active-tool { border-top: 2px solid var(--coral); }
+    .tool-card.coming-soon { opacity: 0.82; }
+
+    .tool-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(91,200,212,0.12);
+      border: 1px solid rgba(91,200,212,0.25);
+      color: var(--teal); padding: 0.25rem 0.7rem;
+      border-radius: 100px; font-family: var(--font-mono); font-size: 0.72rem;
+    }
+
+    .tool-content { padding: 1.75rem; }
+    .tool-icon { font-size: 2.2rem; margin-bottom: 0.75rem; }
+    .tool-card h3 {
+      font-family: var(--font-display); font-size: 1.2rem;
+      font-weight: 700; margin-bottom: 0.6rem;
+    }
+    .tool-card p { color: var(--muted); font-size: 0.875rem; font-weight: 300; margin-bottom: 1.25rem; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .tag {
+      background: rgba(232,149,122,0.08);
+      border: 1px solid rgba(232,149,122,0.2);
+      color: var(--coral); padding: 0.2rem 0.65rem;
+      border-radius: 100px; font-size: 0.75rem;
+    }
+
+    .tool-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      color: var(--teal); font-weight: 600; font-size: 0.9rem;
+      transition: color 0.2s, gap 0.2s;
+      cursor: pointer; background: none; border: none;
+      padding: 0; font-family: var(--font-body);
+    }
+    .tool-btn:hover { color: var(--teal-dark); gap: 0.5rem; }
+    .tool-btn.coming { color: var(--muted); }
+    .tool-btn.coming:hover { color: var(--text); }
+
+    /* ADSENSE */
+    .adsense-slot { padding: 1.5rem 5%; max-width: 800px; margin: 0 auto; text-align: center; }
+    .adsense-placeholder {
+      background: var(--card); border: 1px dashed var(--border);
+      border-radius: 8px; padding: 1.25rem;
+      color: var(--muted); font-family: var(--font-mono); font-size: 0.78rem;
+      display: none; /* Hidden until AdSense is approved */
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.78);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 2000; opacity: 0; visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+
+    .modal {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem;
+      max-width: 460px; width: 90%; text-align: center;
+      transform: scale(0.92); transition: transform 0.25s;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+    .modal-overlay.active .modal { transform: scale(1); }
+
+    .modal-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .modal h3 {
+      font-family: var(--font-display); font-size: 1.5rem;
+      font-weight: 800; margin-bottom: 0.75rem;
+    }
+    .modal p { color: var(--muted); margin-bottom: 1.75rem; font-size: 0.95rem; }
+
+    .close-modal {
+      background: var(--coral); color: white;
+      border: none; padding: 0.75rem 2rem;
+      border-radius: 8px; font-weight: 700; font-size: 0.95rem;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+      font-family: var(--font-display);
+    }
+    .close-modal:hover { background: var(--coral-dark); transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--card); border-top: 1px solid var(--border);
+      padding: 2.5rem 5%; text-align: center; margin-top: 4rem;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted);
+    }
+    .footer-links {
+      display: flex; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap; margin: 0.75rem 0;
+    }
+    footer a { color: var(--text); transition: color 0.2s; }
+    footer a:hover { color: var(--coral); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.appear { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links, nav > .download-btn { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 5rem 5% 4rem; }
+      .about, .builds { padding: 4rem 5%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo"><img src="./downloader_icon.ico" height="32" style="border-radius:6px; margin-right:0.5rem; vertical-align:middle;"/>MISTRI <span class="teal">Builds</span></a>
+  <div class="nav-links">
+    <a href="./index.html">Home</a>
+    <a href="./faq.html">FAQ</a>
+    <a href="./privacy-policy.html">Privacy Policy</a>
+    <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="./index.html">Home</a>
+  <a href="./faq.html">FAQ</a>
+  <a href="./privacy-policy.html">Privacy Policy</a>
+  <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <h1>Built for Real Problems.<br><em>Free Forever.</em></h1>
+  <p>MISTRI Builds is a growing suite of free Windows tools designed to solve everyday problems — simple, fast, and powerful.</p>
+  <a href="#builds" class="explore-btn">Explore the Builds ↓</a>
+</section>
+
+<!-- ABOUT -->
+<section class="about fade-in">
+  <div class="badge">Who We Are</div>
+  <h2>Tools made by a builder, for builders.</h2>
+  <p>MISTRI Builds is an independent project focused on building clean, no-nonsense Windows tools. No subscriptions. No bloat. Just tools that work.</p>
+  <div class="stats">
+    <div class="stat-card"><h3>1+</h3><p>Tools Released</p></div>
+    <div class="stat-card"><h3>100%</h3><p>Free, always</p></div>
+    <div class="stat-card"><h3>Win 10/11</h3><p>Fully supported</p></div>
+  </div>
+</section>
+
+<!-- BUILDS -->
+<section class="builds" id="builds">
+  <div class="section-header fade-in">
+    <h2>Explore the Builds</h2>
+    <p>Click any tool to learn more, see features, and download.</p>
+  </div>
+
+  <div class="tools-grid">
+
+    <!-- MISTRI Downloader — ACTIVE -->
+    <div class="tool-card active-tool fade-in">
+      <div class="tool-content">
+        <div class="tool-icon">🎬</div>
+        <h3>YouTube Playlist Downloader</h3>
+        <p>Download YouTube videos and playlists in MP4 or MP3. Fast, free, no login required.</p>
+        <div class="tags">
+          <span class="tag">MP4</span><span class="tag">MP3</span>
+          <span class="tag">Playlist</span><span class="tag">Free</span>
+        </div>
+        <a href="./tools/mistri-downloader.html" class="tool-btn">Learn More →</a>
+      </div>
+    </div>
+
+    <!-- MISTRI Download Manager -->
+    <div class="tool-card coming-soon fade-in">
+      <div class="tool-badge">Coming Soon</div>
+      <div class="tool-content">
+        <div class="tool-icon">🚀</div>
+        <h3>Download Manager</h3>
+        <p>A powerful multi-threaded download manager for Windows. Like IDM, but completely free.</p>
+        <div class="tags">
+          <span class="tag">Downloader</span><span class="tag">Multi-threaded</span><span class="tag">Free</span>
+        </div>
+        <button class="tool-btn coming" onclick="openModal()">Learn More →</button>
+      </div>
+    </div>
+
+    <!-- MISTRI Music Downloader -->
+    <div class="tool-card coming-soon fade-in">
+      <div class="tool-badge">Coming Soon</div>
+      <div class="tool-content">
+        <div class="tool-icon">🎵</div>
+        <h3>Music Downloader</h3>
+        <p>Download your Spotify and YouTube Music playlists as MP3 files. Paste and download.</p>
+        <div class="tags">
+          <span class="tag">Spotify</span><span class="tag">YT Music</span>
+          <span class="tag">MP3</span><span class="tag">Free</span>
+        </div>
+        <button class="tool-btn coming" onclick="openModal()">Learn More →</button>
+      </div>
+    </div>
+
+    <!-- MISTRI Voice Assistant -->
+    <div class="tool-card coming-soon fade-in">
+      <div class="tool-badge">Coming Soon</div>
+      <div class="tool-content">
+        <div class="tool-icon">🎙️</div>
+        <h3>Voice Assistant</h3>
+        <p>Control your Windows PC with your voice. Screenshots, PC lock, web search — hands free.</p>
+        <div class="tags">
+          <span class="tag">Voice</span><span class="tag">Automation</span>
+          <span class="tag">Windows</span><span class="tag">Free</span>
+        </div>
+        <button class="tool-btn coming" onclick="openModal()">Learn More →</button>
+      </div>
+    </div>
+
+    <!-- MISTRI Screenshot Tool -->
+    <div class="tool-card coming-soon fade-in">
+      <div class="tool-badge">Coming Soon</div>
+      <div class="tool-content">
+        <div class="tool-icon">📸</div>
+        <h3>Screenshot Tool</h3>
+        <p>Capture your screen instantly with a hotkey. Annotate, save, and organize with ease.</p>
+        <div class="tags">
+          <span class="tag">Screenshot</span><span class="tag">Hotkey</span><span class="tag">Free</span>
+        </div>
+        <button class="tool-btn coming" onclick="openModal()">Learn More →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADSENSE SLOT 1 -->
+<div class="adsense-slot">
+  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins> -->
+  <div class="adsense-placeholder">[ Ad Slot 1 — 728×90 ]</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-icon">🛠️</div>
+    <h3>Under Construction</h3>
+    <p>This tool is currently being built. Check back soon for the release! Follow MISTRI Builds on GitHub to get notified when it drops.</p>
+    <button class="close-modal" onclick="closeModal()">Got it!</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>Developed by MISTRI</div>
+  <div class="footer-links">
+    <a href="./index.html">Home</a>
+    <a href="./faq.html">FAQ</a>
+    <a href="./privacy-policy.html">Privacy Policy</a>
+  </div>
+  <div>&copy; 2026 MISTRI Builds. All rights reserved.</div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+  }
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('active');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('appear');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

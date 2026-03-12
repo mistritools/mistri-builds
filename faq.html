@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FAQ — MISTRI Builds</title>
+  <meta name="description" content="Frequently asked questions about MISTRI Builds tools. Find answers about downloading, compatibility, safety and more."/>
+
+  <link rel="icon" type="image/x-icon" href="./downloader_icon.ico"/>
+
+  <!-- Google AdSense — Uncomment after approval -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --coral: #e8957a;
+      --coral-dark: #d4795d;
+      --teal: #5bc8d4;
+      --teal-dark: #3eadb9;
+      --bg: #0c0e13;
+      --bg2: #11141c;
+      --card: #1c2030;
+      --card2: #222638;
+      --border: rgba(255,255,255,0.07);
+      --text: #dde1ee;
+      --muted: #6b7290;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(12,14,19,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%; height: 64px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.3rem;
+      letter-spacing: -0.02em;
+    }
+    .logo .teal { color: var(--teal); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .download-btn {
+      background: var(--coral); color: white;
+      padding: 0.45rem 1.2rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.875rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .download-btn:hover { background: var(--coral-dark); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; cursor: pointer;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(12,14,19,0.97);
+      flex-direction: column;
+      padding: 1.5rem 5%; gap: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a { font-size: 1rem; color: var(--text); }
+    .mobile-menu .download-btn { width: fit-content; }
+
+    /* FAQ HEADER */
+    .faq-header {
+      padding: 5rem 5% 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .faq-header::before {
+      content: '';
+      position: absolute; width: 500px; height: 400px;
+      background: radial-gradient(circle, rgba(91,200,212,0.08) 0%, transparent 65%);
+      top: -100px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .faq-badge {
+      display: inline-block;
+      background: rgba(91,200,212,0.08);
+      border: 1px solid rgba(91,200,212,0.22);
+      color: var(--teal); padding: 0.35rem 1rem;
+      border-radius: 100px; font-size: 0.78rem;
+      font-family: var(--font-mono); margin-bottom: 1.25rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .faq-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .faq-header p {
+      color: var(--muted); font-size: 1.05rem;
+      font-weight: 300; max-width: 500px;
+      margin: 0 auto;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+
+    /* FAQ CONTAINER */
+    .faq-container {
+      max-width: 780px;
+      margin: 3rem auto 5rem;
+      padding: 0 5%;
+    }
+
+    .faq-item {
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item:hover { border-color: rgba(91,200,212,0.2); }
+    .faq-item.active { border-color: rgba(91,200,212,0.3); }
+
+    .faq-question {
+      background: var(--card);
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .faq-question:hover { background: var(--card2); }
+    .faq-item.active .faq-question { background: var(--card2); color: var(--teal); }
+
+    .faq-icon {
+      font-size: 1.2rem;
+      color: var(--teal);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .faq-item.active .faq-icon { transform: rotate(45deg); }
+
+    .faq-answer {
+      background: var(--bg2);
+      padding: 0 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.active .faq-answer {
+      padding: 1.25rem 1.5rem;
+      max-height: 500px;
+    }
+
+    .faq-answer p {
+      color: var(--muted); font-size: 0.9rem;
+      font-weight: 300; margin-bottom: 0.75rem;
+      line-height: 1.7;
+    }
+    .faq-answer p:last-child { margin-bottom: 0; }
+
+    .faq-answer ul {
+      padding-left: 1.25rem; margin-bottom: 0.75rem;
+    }
+    .faq-answer li {
+      color: var(--muted); font-size: 0.9rem;
+      font-weight: 300; margin-bottom: 0.4rem;
+    }
+    .faq-answer a { color: var(--teal); transition: color 0.2s; }
+    .faq-answer a:hover { color: var(--teal-dark); }
+
+    /* ADSENSE */
+    .adsense-slot {
+      padding: 1rem 0; max-width: 780px;
+      margin: 0 auto; text-align: center;
+      padding: 0 5%;
+    }
+    .adsense-placeholder {
+      background: var(--card); border: 1px dashed var(--border);
+      border-radius: 8px; padding: 1.25rem;
+      color: var(--muted); font-family: var(--font-mono);
+      font-size: 0.78rem;
+      display: none; /* Hidden until AdSense is approved */
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--card); border-top: 1px solid var(--border);
+      padding: 2.5rem 5%; text-align: center;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted);
+    }
+    .footer-links {
+      display: flex; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap; margin: 0.75rem 0;
+    }
+    footer a { color: var(--text); transition: color 0.2s; }
+    footer a:hover { color: var(--coral); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.appear { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links, nav > .download-btn { display: none; }
+      .hamburger { display: flex; }
+      .faq-header { padding: 3.5rem 5% 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo"><img src="./downloader_icon.ico" height="32" style="border-radius:6px; margin-right:0.5rem; vertical-align:middle;"/>MISTRI <span class="teal">Builds</span></a>
+  <div class="nav-links">
+    <a href="./index.html">Home</a>
+    <a href="./faq.html">FAQ</a>
+    <a href="./privacy-policy.html">Privacy Policy</a>
+    <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="./index.html">Home</a>
+  <a href="./faq.html">FAQ</a>
+  <a href="./privacy-policy.html">Privacy Policy</a>
+  <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+</div>
+
+<!-- FAQ HEADER -->
+<section class="faq-header">
+  <div class="faq-badge">Got questions? We've got answers.</div>
+  <h1>Frequently Asked Questions</h1>
+  <p>Everything you need to know about MISTRI Builds tools.</p>
+</section>
+
+<!-- FAQ ITEMS -->
+<div class="faq-container fade-in">
+
+  <div class="faq-item">
+    <div class="faq-question">Is MISTRI Downloader free?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>Yes, completely free. No subscription fees, no hidden costs, no premium tiers. All MISTRI Builds tools are free to download and use forever.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Does it work on Mac or Linux?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>Currently MISTRI Downloader is only available for Windows 10 and Windows 11. Mac and Linux versions are not planned at this time.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">What video qualities are supported?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>The following quality options are available:</p>
+      <ul>
+        <li>Best available quality (auto)</li>
+        <li>1080p Full HD</li>
+        <li>720p HD</li>
+        <li>480p Standard</li>
+        <li>360p Low</li>
+      </ul>
+      <p>Note: available quality depends on what the YouTube video actually offers.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Can I download full playlists?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>Yes! Just paste the playlist URL, click Get Info, and the app will detect all videos automatically. You can then download the entire playlist in your chosen format and quality.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Is there a file size limit?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>No file size limit is imposed by the app. You can download videos of any length. Very long videos will naturally take more time depending on your internet speed and YouTube's servers.</p>
+    </div>
+  </div>
+
+  <!-- ADSENSE SLOT 3 -->
+  <div class="adsense-slot" style="margin: 1rem 0;">
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins> -->
+    <div class="adsense-placeholder">[ Ad Slot 3 — 728×90 ]</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Do I need to install Python to use it?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>No. The app ships as a standalone .exe file. Just download and double-click to run. No Python, no extra installs, nothing.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Is it safe to use?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>Yes. The app does not collect any personal data, does not require login, and only connects to YouTube to fetch video info. We recommend always downloading from the official GitHub releases page to ensure you have the genuine file.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">How do I update to the latest version?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>Visit the <a href="https://github.com/mistritools/mistri-builds/releases/latest">GitHub releases page</a> to download the latest version. Simply replace the old .exe with the new one — no uninstallation needed.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Can I download MP3 audio only?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>Yes. Select the MP3 Audio option in the Format selector before clicking Download. The app will extract and save the audio track as an MP3 file.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">Where are my downloaded files saved?<span class="faq-icon">+</span></div>
+    <div class="faq-answer">
+      <p>By default files are saved to your Downloads folder. You can change the save location using the Browse button in the app before starting a download.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>Developed by MISTRI</div>
+  <div class="footer-links">
+    <a href="./index.html">Home</a>
+    <a href="./faq.html">FAQ</a>
+    <a href="./privacy-policy.html">Privacy Policy</a>
+  </div>
+  <div>&copy; 2026 MISTRI Builds. All rights reserved.</div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+  }
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-question').addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      // Open clicked if it wasn't already open
+      if (!isActive) item.classList.add('active');
+    });
+  });
+
+  // Fade in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('appear');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

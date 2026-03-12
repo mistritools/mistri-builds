@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Privacy Policy — MISTRI Builds</title>
+  <meta name="description" content="Privacy Policy for MISTRI Builds. We do not collect any personal data from our users."/>
+
+  <link rel="icon" type="image/x-icon" href="./downloader_icon.ico"/>
+
+  <!-- Google AdSense — Uncomment after approval -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --coral: #e8957a;
+      --coral-dark: #d4795d;
+      --teal: #5bc8d4;
+      --teal-dark: #3eadb9;
+      --bg: #0c0e13;
+      --bg2: #11141c;
+      --card: #1c2030;
+      --border: rgba(255,255,255,0.07);
+      --text: #dde1ee;
+      --muted: #6b7290;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(12,14,19,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%; height: 64px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.3rem;
+      letter-spacing: -0.02em;
+    }
+    .logo .teal { color: var(--teal); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .download-btn {
+      background: var(--coral); color: white;
+      padding: 0.45rem 1.2rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.875rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .download-btn:hover { background: var(--coral-dark); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; cursor: pointer;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(12,14,19,0.97);
+      flex-direction: column;
+      padding: 1.5rem 5%; gap: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a { font-size: 1rem; color: var(--text); }
+    .mobile-menu .download-btn { width: fit-content; }
+
+    /* POLICY HEADER */
+    .policy-header {
+      padding: 5rem 5% 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .policy-header::before {
+      content: '';
+      position: absolute; width: 500px; height: 400px;
+      background: radial-gradient(circle, rgba(91,200,212,0.07) 0%, transparent 65%);
+      top: -100px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .policy-badge {
+      display: inline-block;
+      background: rgba(91,200,212,0.08);
+      border: 1px solid rgba(91,200,212,0.22);
+      color: var(--teal); padding: 0.35rem 1rem;
+      border-radius: 100px; font-size: 0.78rem;
+      font-family: var(--font-mono); margin-bottom: 1.25rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .policy-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .last-updated {
+      color: var(--muted); font-size: 0.85rem;
+      font-family: var(--font-mono);
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+
+    /* POLICY CONTENT */
+    .policy-content {
+      max-width: 720px;
+      margin: 3rem auto 5rem;
+      padding: 0 5%;
+    }
+
+    .policy-section {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-section:last-child {
+      border-bottom: none;
+    }
+
+    .policy-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--teal); margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .policy-section p {
+      color: var(--muted); font-size: 0.9rem;
+      font-weight: 300; margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+    .policy-section p:last-child { margin-bottom: 0; }
+
+    .policy-section ul {
+      padding-left: 1.25rem; margin-bottom: 1rem;
+    }
+    .policy-section li {
+      color: var(--muted); font-size: 0.9rem;
+      font-weight: 300; margin-bottom: 0.5rem;
+      line-height: 1.7;
+    }
+
+    .contact-email {
+      color: var(--teal); transition: color 0.2s;
+    }
+    .contact-email:hover { color: var(--teal-dark); text-decoration: underline; }
+
+    /* ADSENSE */
+    .adsense-slot {
+      max-width: 720px; margin: 0 auto;
+      padding: 0 5%; text-align: center;
+    }
+    .adsense-placeholder {
+      background: var(--card); border: 1px dashed var(--border);
+      border-radius: 8px; padding: 1.25rem;
+      color: var(--muted); font-family: var(--font-mono);
+      font-size: 0.78rem;
+      display: none; /* Hidden until AdSense is approved */
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--card); border-top: 1px solid var(--border);
+      padding: 2.5rem 5%; text-align: center;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted);
+    }
+    .footer-links {
+      display: flex; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap; margin: 0.75rem 0;
+    }
+    footer a { color: var(--text); transition: color 0.2s; }
+    footer a:hover { color: var(--coral); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.appear { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links, nav > .download-btn { display: none; }
+      .hamburger { display: flex; }
+      .policy-header { padding: 3.5rem 5% 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="logo"><img src="./downloader_icon.ico" height="32" style="border-radius:6px; margin-right:0.5rem; vertical-align:middle;"/>MISTRI <span class="teal">Builds</span></a>
+  <div class="nav-links">
+    <a href="./index.html">Home</a>
+    <a href="./faq.html">FAQ</a>
+    <a href="./privacy-policy.html">Privacy Policy</a>
+    <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="./index.html">Home</a>
+  <a href="./faq.html">FAQ</a>
+  <a href="./privacy-policy.html">Privacy Policy</a>
+  <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+</div>
+
+<!-- HEADER -->
+<section class="policy-header">
+  <div class="policy-badge">Last updated: March 2026</div>
+  <h1>Privacy Policy</h1>
+  <p class="last-updated">We keep it simple — your privacy matters to us.</p>
+</section>
+
+<!-- CONTENT -->
+<div class="policy-content fade-in">
+
+  <div class="policy-section">
+    <h2>Introduction</h2>
+    <p>Welcome to MISTRI Builds. We are committed to protecting your privacy. This Privacy Policy explains how our tools and website handle your information.</p>
+    <p>By using our services you accept the practices described in this policy.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2>Information We Collect</h2>
+    <p>MISTRI Builds does not collect any personal data from users. Our applications operate entirely on your device and do not transmit any user information to our servers or any third parties.</p>
+    <p>Specifically our tools:</p>
+    <ul>
+      <li>Do not require account registration or login</li>
+      <li>Do not collect names, email addresses or any personal details</li>
+      <li>Do not track user behavior or usage patterns</li>
+      <li>Do not store any information about downloaded content</li>
+      <li>Do not access or modify any files beyond those you explicitly select</li>
+    </ul>
+    <p>All processing happens locally on your device. The only network requests made are standard calls to YouTube's public API to fetch video metadata.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2>Cookies &amp; Advertising</h2>
+    <p>Our website may use Google AdSense to display advertisements. Google AdSense uses cookies to serve relevant ads based on your browsing activity. These cookies are managed entirely by Google and are subject to Google's Privacy Policy.</p>
+    <p>We do not directly use cookies for any tracking or analytics purposes on our end.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2>Third Party Links</h2>
+    <p>Our website and tools may contain links to third-party websites such as GitHub. We have no control over and assume no responsibility for the content or privacy practices of any third-party sites. We recommend reviewing the privacy policy of every site you visit.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date. We recommend checking this page periodically.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2>Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, feel free to reach out:</p>
+    <p><a href="mailto:mistri0610@gmail.com" class="contact-email">mistri0610@gmail.com</a></p>
+  </div>
+
+</div>
+
+<!-- ADSENSE SLOT 4 -->
+<div class="adsense-slot">
+  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins> -->
+  <div class="adsense-placeholder">[ Ad Slot 4 — 728×90 ]</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>Developed by MISTRI</div>
+  <div class="footer-links">
+    <a href="./index.html">Home</a>
+    <a href="./faq.html">FAQ</a>
+    <a href="./privacy-policy.html">Privacy Policy</a>
+  </div>
+  <div>&copy; 2026 MISTRI Builds. All rights reserved.</div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('appear');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
