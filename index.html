@@ -292,6 +292,24 @@
     }
     .close-modal:hover { background: var(--coral-dark); transform: translateY(-1px); }
 
+    /* CLICKABLE ICON + TITLE */
+    .tool-icon-link {
+      text-decoration: none; color: inherit;
+      display: block; cursor: pointer;
+    }
+    .tool-icon-hover {
+      transition: transform 0.2s;
+    }
+    .tool-icon-link:hover .tool-icon-hover {
+      transform: scale(1.15);
+    }
+    .tool-title-hover {
+      transition: color 0.2s;
+    }
+    .tool-icon-link:hover .tool-title-hover {
+      color: var(--coral);
+    }
+
     /* FOOTER */
     footer {
       background: var(--card); border-top: 1px solid var(--border);
@@ -334,7 +352,7 @@
     <a href="./index.html">Home</a>
     <a href="./faq.html">FAQ</a>
     <a href="./privacy-policy.html">Privacy Policy</a>
-    <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+    <a href="https://github.com/mistritools/mistri-builds/releases/download/v1.0/YouTube_Playlist_Downloader_v1.0.zip" class="download-btn">Download Free</a>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -345,7 +363,7 @@
   <a href="./index.html">Home</a>
   <a href="./faq.html">FAQ</a>
   <a href="./privacy-policy.html">Privacy Policy</a>
-  <a href="https://github.com/mistritools/mistri-builds/releases/latest" class="download-btn">Download Free</a>
+  <a href="https://github.com/mistritools/mistri-builds/releases/download/v1.0/YouTube_Playlist_Downloader_v1.0.zip" class="download-btn">Download Free</a>
 </div>
 
 <!-- HERO -->
@@ -381,14 +399,15 @@
     <!-- MISTRI Downloader — ACTIVE -->
     <div class="tool-card active-tool fade-in">
       <div class="tool-content">
-        <div class="tool-icon">🎬</div>
-        <h3>YouTube Playlist Downloader</h3>
+        <a href="./tools/mistri-downloader.html" class="tool-icon-link">
+          <div class="tool-icon tool-icon-hover">🎬</div>
+          <h3 class="tool-title-hover">YouTube Playlist Downloader</h3>
+        </a>
         <p>Download YouTube videos and playlists in MP4 or MP3. Fast, free, no login required.</p>
         <div class="tags">
           <span class="tag">MP4</span><span class="tag">MP3</span>
           <span class="tag">Playlist</span><span class="tag">Free</span>
         </div>
-        <a href="./tools/mistri-downloader.html" class="tool-btn">Learn More →</a>
       </div>
     </div>
 
